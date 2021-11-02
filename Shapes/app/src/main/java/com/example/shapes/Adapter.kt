@@ -46,14 +46,20 @@ class Adapter(private val context: Context,
 // Get detail element
         val detailTextView = rowView.findViewById(R.id.rowDetail) as TextView
 
+        val detailTextView2 = rowView.findViewById(R.id.rowDetail2) as TextView
+
 
         // 1
         val figure = getItem(position) as Figure
 
 // 2
 
-        areaTextView.text = figure.figureArea.toString()
+        areaTextView.text = "%.3f".format(figure.figureArea)
+
         detailTextView.text = figure.characteristic
+        detailTextView2.text = "%.3f".format(figure.calculateCharacteristic())
+
+        //"%.3f".format(listOfFigures[i].calculateCharacteristic())
 
 // 3
         /*Picasso.with(context).load(recipe.imageUrl).placeholder(R.mipmap.ic_launcher).into(thumbnailImageView)

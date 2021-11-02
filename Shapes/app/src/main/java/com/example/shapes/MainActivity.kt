@@ -1,12 +1,9 @@
 package com.example.shapes
 
 import android.os.Bundle
-import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import kotlin.random.Random
-
-
 
 
 class MainActivity : AppCompatActivity() {
@@ -76,7 +73,7 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-        return listOfFigures
+        return listOfFigures as ArrayList<Figure>
     }
 
 
