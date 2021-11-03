@@ -3,4 +3,6 @@
     <string name="headertextview1">SHAPE</string>
     <string name="headertextview2">AREA</string>
     <string name="headertextview3">FEATURE</string>
+    <string name="number">1.213</string>
+    <string name="text">text</string>
 </resources>
