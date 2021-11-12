@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.webkit.WebChromeClient
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import kotlin.random.Random
@@ -20,14 +19,24 @@ class MainActivity : AppCompatActivity() {
         val bundle : Bundle? = intent.extras
 
         val numberOfFigures : Int
+        val rangeFrom : Double
+        val rangeTo : Double
 
-        numberOfFigures = if (bundle == null){
-            5
-        } else
-            bundle.getInt(Settings.FIG_NUMBER)
+        if (bundle == null){
+            numberOfFigures = (1..25).random()
+
+            rangeFrom = 0.0
+
+            rangeTo = 1.0
+
+        } else{
+            numberOfFigures = bundle.getInt(Settings.FIG_NUMBER)
+            rangeFrom = bundle.getDouble(Settings.RANGE_BEG)
+            rangeTo = bundle.getDouble(Settings.RANGE_END)
+        }
 
 
-        val listOfFigures: ArrayList<Figure> = randomFigures(numberOfFigures)  //lista figur
+        val listOfFigures: ArrayList<Figure> = randomFigures(numberOfFigures, rangeFrom, rangeTo)  //lista figur
 
 
         val listView: ListView = findViewById(R.id.listView)
@@ -69,7 +78,7 @@ class MainActivity : AppCompatActivity() {
     /*
     Funkcja odpowiedzialna za losowanie figur i ich wymiarów
      */
-    private fun randomFigures(numberOfFigures: Int): ArrayList<Figure> {
+    private fun randomFigures(numberOfFigures: Int, from: Double, to: Double): ArrayList<Figure> {
         println("Hello world!")
 
 
@@ -88,8 +97,8 @@ class MainActivity : AppCompatActivity() {
                     listOfFigures.add(
                         Circle(
                             Random.nextDouble(
-                                from = 0.0,
-                                until = 1.0
+                                from = from,
+                                until = to
                             )
                         )
                     )   //dodanie Koła do listy o losowym promieniu z zakresu 0 - 1
@@ -98,8 +107,8 @@ class MainActivity : AppCompatActivity() {
                     listOfFigures.add(
                         Square(
                             Random.nextDouble(
-                                from = 0.0,
-                                until = 1.0
+                                from = from,
+                                until = to
                             )
                         )
                     )   //dodanie Kwadratu do listy o losowym boku z zakresu 0 - 1
@@ -108,8 +117,8 @@ class MainActivity : AppCompatActivity() {
                     listOfFigures.add(
                         Triangle(
                             Random.nextDouble(
-                                from = 0.0,
-                                until = 1.0
+                                from = from,
+                                until = to
                             )
                         )
                     )   //dodanie Trójkąta do listy o losowym boku z zakresu 0 - 1
