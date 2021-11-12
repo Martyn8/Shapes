@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.webkit.WebChromeClient
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import kotlin.random.Random
@@ -15,10 +16,21 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-        val listOfFigures: ArrayList<Figure> = randomFigures()  //lista figur
+        //pobranie zmiennych z innej aktywności
+        val bundle : Bundle? = intent.extras
+
+        val numberOfFigures : Int
+
+        numberOfFigures = if (bundle == null){
+            5
+        } else
+            bundle.getInt(Settings.FIG_NUMBER)
+
+
+        val listOfFigures: ArrayList<Figure> = randomFigures(numberOfFigures)  //lista figur
+
 
         val listView: ListView = findViewById(R.id.listView)
-
 
         val adapter = Adapter(
             this,
@@ -36,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        when (item?.itemId) {
+        when (item.itemId) {
             R.id.about -> {
                 val intent = Intent(this, About::class.java)
                 startActivity(intent)
@@ -57,11 +69,11 @@ class MainActivity : AppCompatActivity() {
     /*
     Funkcja odpowiedzialna za losowanie figur i ich wymiarów
      */
-    private fun randomFigures(): ArrayList<Figure> {
+    private fun randomFigures(numberOfFigures: Int): ArrayList<Figure> {
         println("Hello world!")
 
 
-        val numberOfFigures = (1..25).random()  //ilość N figur do wylosowania
+       //val  = int//(1..25).random()  //ilość N figur do wylosowania
 
         println("numberOfFigures $numberOfFigures")
 
