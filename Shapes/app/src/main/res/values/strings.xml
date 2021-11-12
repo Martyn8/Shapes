@@ -5,4 +5,12 @@
     <string name="headertextview3">FEATURE</string>
     <string name="number">1.213</string>
     <string name="text">text</string>
+    <string name="slider_desc">slider desc</string>
+    <string name="number_of_figures">Number of figures</string>
+    <string name="applySettings">Apply</string>
+    <string name="applySettings">Apply</string>
+    <string name="slider">Slider</string>
+    <string name="textViewSlider">Set initial value range</string>
+    <string name="number_of_figures">Number of figures</string>
+    <string name="textviewfignumber">Set number of figures</string>
 </resources>
