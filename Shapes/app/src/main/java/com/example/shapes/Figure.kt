@@ -3,7 +3,7 @@ package com.example.shapes
 /*
 Klasa abstrakcyjna Figura
  */
-abstract class Figure(val size: Double) {
+abstract class Figure (val size: Double)   {
     abstract val figureArea: Double
     abstract val characteristic: String
 

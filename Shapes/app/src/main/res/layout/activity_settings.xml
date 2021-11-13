@@ -10,7 +10,7 @@
     tools:context=".Settings">
 
     <TextView
-        android:id="@+id/viewFigNum"
+        android:id="@+id/viewFigStats"
         android:layout_width="411dp"
         android:layout_height="50dp"
         android:gravity="center_horizontal|center_vertical"
@@ -32,11 +32,11 @@
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewFigNum"
+        app:layout_constraintTop_toBottomOf="@+id/viewFigStats"
         tools:ignore="TextContrastCheck" />
 
     <TextView
-        android:id="@+id/viewSlider"
+        android:id="@+id/viewAreaStats"
         android:layout_width="411dp"
         android:layout_height="50dp"
         android:layout_marginTop="50dp"
@@ -61,7 +61,7 @@
         android:valueTo="1.00"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewSlider"
+        app:layout_constraintTop_toBottomOf="@+id/viewAreaStats"
 app:minSeparation="10.0dp"
         app:values="@array/initial_slider_values" />
 

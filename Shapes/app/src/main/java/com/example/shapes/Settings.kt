@@ -16,6 +16,9 @@ class Settings : AppCompatActivity() {
         const val RANGE_END = "END VALUE"
     }
 
+    /*
+    inicjalizacja zmiennych
+     */
     var beg: Float = 0.0f
 
     var end: Float = 0.0f
@@ -28,14 +31,16 @@ class Settings : AppCompatActivity() {
 
         val rangeSlider: RangeSlider = findViewById(R.id.rangeSlider)
 
+        //czytanie wartości ze slidera
         rangeSlider.addOnChangeListener { slider, value, fromUser ->
-            val values = slider.values
+            val values = slider.values //lista zawierająca wartość początkową i końcową
             rangeSlider.setMinSeparationValue(100.0f)
             beg = values[0]
             end = values[1]
 
         }
 
+        //przycisk akceptowania zmian
         apply.setOnClickListener {
             val figNumber = findViewById<TextView>(R.id.textFigNum).text.toString().toInt()
             val begg = beg.toDouble()
