@@ -21,7 +21,7 @@ class Settings : AppCompatActivity() {
      */
     var beg: Float = 0.0f
 
-    var end: Float = 0.0f
+    var end: Float = 1.0f
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
