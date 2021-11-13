@@ -5,7 +5,7 @@ import kotlin.math.PI
 /*
 Klasa Koło
  */
-class Circle(size: Double) : Figure(size) {
+class Circle(size: Double)  : Figure(size)  {
     override val figureArea: Double = calculateArea()
 
     override val characteristic: String = "diameter"

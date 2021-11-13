@@ -5,4 +5,25 @@
     <string name="headertextview3">FEATURE</string>
     <string name="number">1.213</string>
     <string name="text">text</string>
+    <string name="slider_desc">slider desc</string>
+    <string name="number_of_figures">Number of figures</string>
+    <string name="applySettings">Apply</string>
+    <string name="slider">Slider</string>
+    <string name="textViewSlider">Set initial value range</string>
+    <string name="textviewfignumber">Set number of figures</string>
+    <string name="numFigures">Number of figures</string>
+    <string name="totaArea">Total area</string>
+    <string name="totalChar">Total characteristics value</string>
+    <string name="triangleimage">triangleImage</string>
+    <string name="circleimage">circleImage</string>
+    <string name="squareimage">squareImage</string>
+    <string name="numTri">triangle</string>
+    <string name="numCircle">circle</string>
+    <string name="numSquare">square</string>
+    <string name="areaTri">artri</string>
+    <string name="areaCircle">arcir</string>
+    <string name="areaSquare">arsq</string>
+    <string name="charTri">chartri</string>
+    <string name="charCircle">charcir</string>
+    <string name="charSquare">charsq</string>
 </resources>
