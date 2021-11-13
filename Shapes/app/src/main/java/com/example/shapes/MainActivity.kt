@@ -11,7 +11,7 @@ import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
 
-    val listOfFigures: MutableList<Figure> = mutableListOf()
+    private val listOfFigures: MutableList<Figure> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -30,7 +30,6 @@ class Statistics : AppCompatActivity() {
         val charListIntent = bundle.getIntegerArrayList("CHARLIST")
 
 
-
         /*
         Number of figures
          */
@@ -59,8 +58,8 @@ class Statistics : AppCompatActivity() {
         Wypełnienie pól tekstwowych wartościami
         W zależności od tego czy ilość danej figury wynosi 0 czu nie
          */
-        when (numListIntent?.get(0)){
-             0 -> {
+        when (numListIntent?.get(0)) {
+            0 -> {
                 numTriangle.text = "0"
                 areaTriangle.text = "0"
                 charTriangle.text = "0"
@@ -73,7 +72,7 @@ class Statistics : AppCompatActivity() {
         }
 
 
-        when(numListIntent?.get(1)) {
+        when (numListIntent?.get(1)) {
             0 -> {
                 numCircle.text = "0"
                 areaCircle.text = "0"
@@ -86,7 +85,7 @@ class Statistics : AppCompatActivity() {
             }
         }
 
-        when(numListIntent?.get(2)) {
+        when (numListIntent?.get(2)) {
             0 -> {
                 numSquare.text = "0"
                 areaSquare.text = "0"

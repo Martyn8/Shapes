@@ -22,7 +22,8 @@
             android:paddingVertical="20dp"
             android:text="@string/headertextview1"
             android:textAlignment="center"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/textView5"
@@ -32,7 +33,8 @@
             android:paddingVertical="20dp"
             android:text="@string/headertextview2"
             android:textAlignment="center"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textStyle="bold"/>
 
 
         <TextView
@@ -43,7 +45,8 @@
             android:paddingVertical="20dp"
             android:text="@string/headertextview3"
             android:textAlignment="center"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textStyle="bold"/>
 
 
     </LinearLayout>
