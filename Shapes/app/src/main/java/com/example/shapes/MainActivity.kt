@@ -5,13 +5,21 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ListView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlin.random.Random
 
 
 class MainActivity : AppCompatActivity() {
 
-    private val listOfFigures: MutableList<Figure> = mutableListOf()
+    private var listOfFigures: MutableList<Figure> = mutableListOf()
+    private var shapeAscending = true
+    private var areaAscending = true
+    private var featureAscending = true
+    private var shapeOrder = ""
+    private var areaOrder = ""
+    private var featureOrder = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         val numberOfFigures: Int
         val rangeFrom: Double
         val rangeTo: Double
+
 
         //pobranie zmiennych z innej aktywności
         val bundle: Bundle? = intent.extras
@@ -39,16 +48,44 @@ class MainActivity : AppCompatActivity() {
             rangeTo = bundle.getDouble(Settings.RANGE_END)
         }
 
-        val listOfFigures: ArrayList<Figure> =
-            randomFigures(numberOfFigures, rangeFrom, rangeTo)  //lista figur
+
+        listOfFigures = randomFigures(numberOfFigures, rangeFrom, rangeTo)  //lista figur
+
 
         val listView: ListView = findViewById(R.id.listView)
 
-        val adapter = Adapter(
+        var adapter = Adapter(
             this,
-            listOfFigures
+            listOfFigures as ArrayList<Figure>
         )  //adapter dla ListView, otrzymuje listę figur do wyświetlenia
         listView.adapter = adapter
+
+
+        val shapeButton = findViewById<TextView>(R.id.headerShape)
+        val areaButton = findViewById<TextView>(R.id.headerArea)
+        val featureButton = findViewById<TextView>(R.id.headerFeature)
+
+        shapeButton.setOnClickListener {
+            listOfFigures = sortShape()
+            adapter = Adapter(this, listOfFigures as java.util.ArrayList<Figure>)
+            listView.adapter = adapter
+
+            Toast.makeText(this, "Sorted by shape $shapeOrder", Toast.LENGTH_SHORT).show()
+        }
+        areaButton.setOnClickListener {
+            listOfFigures = sortArea()
+            adapter = Adapter(this, listOfFigures as ArrayList<Figure>)
+            listView.adapter = adapter
+            Toast.makeText(this, "Sorted by area $areaOrder", Toast.LENGTH_SHORT).show()
+        }
+
+        featureButton.setOnClickListener {
+            listOfFigures = sortFeature()
+            adapter = Adapter(this, listOfFigures as ArrayList<Figure>)
+            listView.adapter = adapter
+            Toast.makeText(this, "Sorted by feature $featureOrder", Toast.LENGTH_SHORT).show()
+        }
+
 
     }
 
@@ -101,6 +138,7 @@ class MainActivity : AppCompatActivity() {
 
         return super.onOptionsItemSelected(item)
     }
+
 
     /*
     Funkcja odpowiedzialna za losowanie figur i ich wymiarów
@@ -240,4 +278,47 @@ class MainActivity : AppCompatActivity() {
 
         return areaList
     }
+
+    private fun sortShape(): MutableList<Figure> {
+        println(listOfFigures)
+        if (shapeAscending) {
+            listOfFigures = listOfFigures.sortedBy { it.javaClass.simpleName }.toMutableList()
+            shapeOrder = "ascending"
+        } else {
+            listOfFigures =
+                listOfFigures.sortedByDescending { it.javaClass.simpleName }.toMutableList()
+            shapeOrder = "descending"
+        }
+
+        shapeAscending = !shapeAscending
+        println(listOfFigures)
+        return listOfFigures
+    }
+
+    private fun sortArea(): MutableList<Figure> {
+        if (areaAscending) {
+            listOfFigures = listOfFigures.sortedBy { it.figureArea }.toMutableList()
+            areaOrder = "ascending"
+        } else {
+            listOfFigures = listOfFigures.sortedByDescending { it.figureArea }.toMutableList()
+            areaOrder = "descending"
+        }
+        areaAscending = !areaAscending
+        return listOfFigures
+    }
+
+    private fun sortFeature(): MutableList<Figure> {
+        if (featureAscending) {
+            listOfFigures = listOfFigures.sortedBy { it.calculateCharacteristic() }.toMutableList()
+            featureOrder = "ascending"
+        } else {
+            listOfFigures =
+                listOfFigures.sortedByDescending { it.calculateCharacteristic() }.toMutableList()
+            featureOrder = "descending"
+        }
+        featureAscending = !featureAscending
+        return listOfFigures
+    }
+
+
 }

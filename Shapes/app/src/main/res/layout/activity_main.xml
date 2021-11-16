@@ -15,38 +15,47 @@
         tools:layout_editor_absoluteX="25dp">
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/headerShape"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             android:paddingVertical="20dp"
+            android:paddingEnd="20dp"
             android:text="@string/headertextview1"
             android:textAlignment="center"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            app:drawableEndCompat="@drawable/sort" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/headerArea"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             android:paddingVertical="20dp"
+            android:paddingEnd="20dp"
             android:text="@string/headertextview2"
             android:textAlignment="center"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            app:drawableEndCompat="@drawable/sort" />
 
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/headerFeature"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             android:paddingVertical="20dp"
+            android:paddingEnd="20dp"
             android:text="@string/headertextview3"
             android:textAlignment="center"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            app:drawableEndCompat="@drawable/sort" />
 
 
     </LinearLayout>
