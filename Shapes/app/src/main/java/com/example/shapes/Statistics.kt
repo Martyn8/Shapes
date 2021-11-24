@@ -1,6 +1,10 @@
 package com.example.shapes
 
 import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +15,19 @@ class Statistics : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_statistics)
+
+        val broadcast_reciever = object : BroadcastReceiver() {
+
+            override fun onReceive(arg0: Context, intent: Intent) {
+                val action = intent.action
+                if (action == "finish_activity") {
+                    finish()
+                    // DO WHATEVER YOU WANT.
+                }
+            }
+        }
+        registerReceiver(broadcast_reciever, IntentFilter("finish_activity"))
+
 
         /*    var args = intent.getBundleExtra("BUNDLE")
         var list = args!!.getSerializable("LIST")*/
@@ -98,15 +115,11 @@ class Statistics : AppCompatActivity() {
             }
         }
 
+    }
 
-        //to nie działa
-        // areaSquare.text = areaListIntent?.get(2).toString()
-
-        //nope
-//        charTriangle.text = charListIntent?.get(0).toString()
-//        charCircle.text = charListIntent?.get(1).toString()
-//        charSquare.text = charListIntent?.get(2).toString()
-
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
 }

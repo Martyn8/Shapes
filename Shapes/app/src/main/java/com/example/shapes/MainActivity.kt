@@ -1,5 +1,6 @@
 package com.example.shapes
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -7,7 +8,10 @@ import android.view.MenuItem
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import java.io.Serializable
 import kotlin.random.Random
 
 
@@ -20,79 +24,131 @@ class MainActivity : AppCompatActivity() {
     private var shapeOrder = ""
     private var areaOrder = ""
     private var featureOrder = ""
+    var numberOfFigures = 5
+    var rangeFrom = 0.0
+    var rangeTo = 1.0
+    var resultContract =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult? -> }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val numberOfFigures: Int
-        val rangeFrom: Double
-        val rangeTo: Double
 
 
-        //pobranie zmiennych z innej aktywności
-        val bundle: Bundle? = intent.extras
-
-        /*
-        Sprawdzenie czy bundle istnieje
-        w celu zainicjalizowania zmiennych w zalezności od tego czy
-        jest to pierwsze uruchomienie aktywości czy kolejne po wybraniu ustawień
-         */
-        if (bundle == null) {
-            numberOfFigures = (1..25).random()
-            rangeFrom = 0.0
-            rangeTo = 1.0
-        } else {
-            numberOfFigures = bundle.getInt(Settings.FIG_NUMBER)
-            rangeFrom = bundle.getDouble(Settings.RANGE_BEG)
-            rangeTo = bundle.getDouble(Settings.RANGE_END)
-        }
-
-
-        listOfFigures = randomFigures(numberOfFigures, rangeFrom, rangeTo)  //lista figur
-
+        val intentfinish = Intent("finish_activity")
+        sendBroadcast(intentfinish)
 
         val listView: ListView = findViewById(R.id.listView)
 
-        var adapter = Adapter(
+        //początkowa lista figur
+        listOfFigures =
+            randomFigures(numberOfFigures, rangeFrom, rangeTo)  //lista figur
+
+
+        val adapter = Adapter(
             this,
             listOfFigures as ArrayList<Figure>
         )  //adapter dla ListView, otrzymuje listę figur do wyświetlenia
         listView.adapter = adapter
 
 
+
+        //pobranie zmiennych z aktywności Settings
+        resultContract =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val intent = result.data
+                    // Handle the Intent
+                    val num = intent!!.getIntExtra(Settings.FIG_NUMBER, 0)
+                    numberOfFigures = num
+
+                    Toast.makeText(this, "result", Toast.LENGTH_SHORT).show()
+                    listOfFigures.clear()
+                    listOfFigures =
+                        randomFigures(numberOfFigures, rangeFrom, rangeTo)  //lista figur
+
+
+                    val adapter = Adapter(
+                        this,
+                        listOfFigures as ArrayList<Figure>
+                    )  //adapter dla ListView, otrzymuje listę figur do wyświetlenia
+                    listView.adapter = adapter
+
+                } else if (result.resultCode == Activity.RESULT_CANCELED) {
+                    Toast.makeText(this, "no result", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+
+        /*
+        Listener dla każdego nagłówka listy figur w celu sortowania
+         */
         val shapeButton = findViewById<TextView>(R.id.headerShape)
         val areaButton = findViewById<TextView>(R.id.headerArea)
         val featureButton = findViewById<TextView>(R.id.headerFeature)
 
         shapeButton.setOnClickListener {
             listOfFigures = sortShape()
-            adapter = Adapter(this, listOfFigures as java.util.ArrayList<Figure>)
+            val adapter = Adapter(this, listOfFigures as java.util.ArrayList<Figure>)
             listView.adapter = adapter
 
             Toast.makeText(this, "Sorted by shape $shapeOrder", Toast.LENGTH_SHORT).show()
         }
+
+/*        shapeButton.setOnClickListener {
+            listOfFigures = Sorting(listOfFigures).sortShape()
+            val adapter = Adapter(this, listOfFigures as java.util.ArrayList<Figure>)
+            listView.adapter = adapter
+
+            Toast.makeText(this, "Sorted by shape ${Sorting(listOfFigures).shapeOrder}", Toast.LENGTH_SHORT).show()
+        }*/
+
+
         areaButton.setOnClickListener {
             listOfFigures = sortArea()
-            adapter = Adapter(this, listOfFigures as ArrayList<Figure>)
+            val adapter = Adapter(this, listOfFigures as ArrayList<Figure>)
             listView.adapter = adapter
             Toast.makeText(this, "Sorted by area $areaOrder", Toast.LENGTH_SHORT).show()
         }
 
         featureButton.setOnClickListener {
             listOfFigures = sortFeature()
-            adapter = Adapter(this, listOfFigures as ArrayList<Figure>)
+            val adapter = Adapter(this, listOfFigures as ArrayList<Figure>)
             listView.adapter = adapter
             Toast.makeText(this, "Sorted by feature $featureOrder", Toast.LENGTH_SHORT).show()
         }
 
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+
+        outState.putSerializable("lista", listOfFigures as Serializable)
+
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+
+
+        super.onRestoreInstanceState(savedInstanceState)
+
+        val serializablelist = savedInstanceState.getSerializable("lista")
+
+        listOfFigures = serializablelist as MutableList<Figure>
+
+        val listView: ListView = findViewById(R.id.listView)
+
+        val adapter = Adapter(this, listOfFigures as ArrayList<Figure>)
+        listView.adapter = adapter
 
     }
+
 
     /*
     Menu opcji w AppBar
      */
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.main, menu)
         return true
@@ -113,7 +169,9 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.settings -> {
                 val intent = Intent(this, Settings::class.java)
-                startActivity(intent)
+                //startActivity(intent)
+                resultContract.launch(intent)
+
             }
             R.id.stats -> {
                 val intent = Intent(this, Statistics::class.java)
@@ -145,15 +203,7 @@ class MainActivity : AppCompatActivity() {
      */
     private fun randomFigures(numberOfFigures: Int, from: Double, to: Double): ArrayList<Figure> {
         println("Hello world!")
-
-
-        //val  = int//(1..25).random()  //ilość N figur do wylosowania
-
         println("numberOfFigures $numberOfFigures")
-
-
-        //val listOfFigures: MutableList<Figure> = mutableListOf()    //lista figur
-
 
         for (i in 0 until numberOfFigures) {
 
@@ -279,7 +329,12 @@ class MainActivity : AppCompatActivity() {
         return areaList
     }
 
-    private fun sortShape(): MutableList<Figure> {
+
+    fun sortShape(/*shapeAscending: Boolean, shapeOrder: String,*/): MutableList<Figure> {
+
+/*        var shapeAscending = shapeAscending
+        var shapeOrder = shapeOrder*/
+
         println(listOfFigures)
         if (shapeAscending) {
             listOfFigures = listOfFigures.sortedBy { it.javaClass.simpleName }.toMutableList()
@@ -295,7 +350,11 @@ class MainActivity : AppCompatActivity() {
         return listOfFigures
     }
 
-    private fun sortArea(): MutableList<Figure> {
+    fun sortArea(/*areaAscending: Boolean, areaOrder: String*/): MutableList<Figure> {
+
+/*        var areaAscending = areaAscending
+        var areaOrder = areaOrder*/
+
         if (areaAscending) {
             listOfFigures = listOfFigures.sortedBy { it.figureArea }.toMutableList()
             areaOrder = "ascending"
@@ -307,7 +366,11 @@ class MainActivity : AppCompatActivity() {
         return listOfFigures
     }
 
-    private fun sortFeature(): MutableList<Figure> {
+    fun sortFeature(/*featureAscending: Boolean, featureOrder: String*/): MutableList<Figure> {
+
+/*        var featureAscending = featureAscending
+        var featureOrder = featureOrder*/
+
         if (featureAscending) {
             listOfFigures = listOfFigures.sortedBy { it.calculateCharacteristic() }.toMutableList()
             featureOrder = "ascending"
@@ -319,6 +382,4 @@ class MainActivity : AppCompatActivity() {
         featureAscending = !featureAscending
         return listOfFigures
     }
-
-
 }

@@ -15,7 +15,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/viewFigStats"
+            android:id="@+id/viewFigNumSet"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:gravity="center_horizontal|center_vertical"
@@ -35,7 +35,7 @@
             tools:ignore="TextContrastCheck" />
 
         <TextView
-            android:id="@+id/viewAreaStats"
+            android:id="@+id/viewRangeSet"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="50dp"

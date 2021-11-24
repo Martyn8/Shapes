@@ -1,6 +1,10 @@
 package com.example.shapes
 
+import android.app.Activity
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -27,6 +31,21 @@ class Settings : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
+
+        val broadcast_reciever = object : BroadcastReceiver() {
+
+            override fun onReceive(arg0: Context, intent: Intent) {
+                val action = intent.action
+                if (action == "finish_activity") {
+                    finish()
+                    // DO WHATEVER YOU WANT.
+                }
+            }
+        }
+        registerReceiver(broadcast_reciever, IntentFilter("finish_activity"))
+
+
+
         val apply = findViewById<Button>(R.id.applySettings)
 
         val rangeSlider: RangeSlider = findViewById(R.id.rangeSlider)
@@ -43,9 +62,9 @@ class Settings : AppCompatActivity() {
         //przycisk akceptowania zmian
         apply.setOnClickListener {
             val figNumber = findViewById<TextView>(R.id.textFigNum).text.toString().toInt()
-            val begg = beg.toDouble()
-            val endd = end.toDouble()
-            if (begg == endd) {
+            val begVal = beg.toDouble()
+            val endVal = end.toDouble()
+            if (begVal == endVal) {
                 Toast.makeText(
                     this,
                     "Start and end of the range cannot be the same!",
@@ -54,10 +73,25 @@ class Settings : AppCompatActivity() {
             } else {
                 val intent = Intent(this, MainActivity::class.java)
                 intent.putExtra(FIG_NUMBER, figNumber)
-                intent.putExtra(RANGE_BEG, begg)
-                intent.putExtra(RANGE_END, endd)
-                startActivity(intent)
+                intent.putExtra(RANGE_BEG, begVal)
+                intent.putExtra(RANGE_END, endVal)
+                //startActivity(intent)
+                setResult(Activity.RESULT_OK, intent)
+
+                finish()
             }
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        setResult(Activity.RESULT_CANCELED)
+
+        finish()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }

@@ -26,4 +26,5 @@
     <string name="charTri">chartri</string>
     <string name="charCircle">charcir</string>
     <string name="charSquare">charsq</string>
+    <string name="aboutText">This is a figure draw application \n Martyna Jurusik Teleinformatyka sem. 7</string>
 </resources>

@@ -14,7 +14,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/viewFigStats"
+            android:id="@+id/viewFigNumSet"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="center_horizontal"
@@ -92,7 +92,7 @@
         </TableRow>
 
         <TextView
-            android:id="@+id/viewAreaStats"
+            android:id="@+id/viewRangeSet"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="center_horizontal"
