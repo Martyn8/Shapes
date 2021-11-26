@@ -15,4 +15,10 @@
         <item name="buttonStyle">@color/yellow</item>
         <item name="android:textViewStyle">@color/black</item>
     </style>
+    <style name="Theme.Shapes.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.Shapes.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.Shapes.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

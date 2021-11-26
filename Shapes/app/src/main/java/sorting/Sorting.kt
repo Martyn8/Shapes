@@ -1,23 +1,21 @@
-package com.example.shapes
+package sorting
 
- class Sorting (var listOfFigures: MutableList<Figure>) {
+import com.example.shapes.Figure
 
-      var shapeAscending = true
-      var areaAscending = true
-     var featureAscending = true
-     lateinit var shapeOrder : String
-     lateinit var areaOrder : String
-     lateinit var featureOrder : String
+object Sorting{
 
-    /*
-    Funkcje sortujące po wartościach nagłówków listy figur
-     */
-    fun sortShape(/*shapeAscending: Boolean, shapeOrder: String,*/): MutableList<Figure> {
+     var shapeAscending : Boolean = true
+     var areaAscending : Boolean = true
+     var featureAscending : Boolean = true
+     var shapeOrder : String = "ascending"
+     var areaOrder : String ="ascending"
+     var featureOrder : String = "ascending"
 
-/*        var shapeAscending = shapeAscending
-        var shapeOrder = shapeOrder*/
+    fun sortShape(list: MutableList<Figure>): MutableList<Figure> {
 
-        println(listOfFigures)
+        var listOfFigures = list
+
+        println(list)
         if (shapeAscending) {
             listOfFigures = listOfFigures.sortedBy { it.javaClass.simpleName }.toMutableList()
             shapeOrder = "ascending"
@@ -32,10 +30,12 @@ package com.example.shapes
         return listOfFigures
     }
 
-    fun sortArea(/*areaAscending: Boolean, areaOrder: String*/): MutableList<Figure> {
 
-/*        var areaAscending = areaAscending
-        var areaOrder = areaOrder*/
+
+
+    fun sortArea(list: MutableList<Figure>): MutableList<Figure> {
+
+        var listOfFigures = list
 
         if (areaAscending) {
             listOfFigures = listOfFigures.sortedBy { it.figureArea }.toMutableList()
@@ -48,10 +48,11 @@ package com.example.shapes
         return listOfFigures
     }
 
-    fun sortFeature(/*featureAscending: Boolean, featureOrder: String*/): MutableList<Figure> {
 
-/*        var featureAscending = featureAscending
-        var featureOrder = featureOrder*/
+
+    fun sortFeature(list: MutableList<Figure>): MutableList<Figure> {
+
+        var listOfFigures = list
 
         if (featureAscending) {
             listOfFigures = listOfFigures.sortedBy { it.calculateCharacteristic() }.toMutableList()

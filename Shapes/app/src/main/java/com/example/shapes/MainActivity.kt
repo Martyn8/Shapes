@@ -1,16 +1,21 @@
 package com.example.shapes
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView.AdapterContextMenuInfo
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import sorting.Sorting
 import java.io.Serializable
 import kotlin.random.Random
 
@@ -18,12 +23,6 @@ import kotlin.random.Random
 class MainActivity : AppCompatActivity() {
 
     private var listOfFigures: MutableList<Figure> = mutableListOf()
-    private var shapeAscending = true
-    private var areaAscending = true
-    private var featureAscending = true
-    private var shapeOrder = ""
-    private var areaOrder = ""
-    private var featureOrder = ""
     var numberOfFigures = 5
     var rangeFrom = 0.0
     var rangeTo = 1.0
@@ -33,7 +32,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
 
 
         val intentfinish = Intent("finish_activity")
@@ -51,7 +49,7 @@ class MainActivity : AppCompatActivity() {
             listOfFigures as ArrayList<Figure>
         )  //adapter dla ListView, otrzymuje listę figur do wyświetlenia
         listView.adapter = adapter
-
+        registerForContextMenu(listView)
 
 
         //pobranie zmiennych z aktywności Settings
@@ -89,36 +87,75 @@ class MainActivity : AppCompatActivity() {
         val featureButton = findViewById<TextView>(R.id.headerFeature)
 
         shapeButton.setOnClickListener {
-            listOfFigures = sortShape()
+
+
+            listOfFigures = Sorting.sortShape(listOfFigures)
             val adapter = Adapter(this, listOfFigures as java.util.ArrayList<Figure>)
             listView.adapter = adapter
 
-            Toast.makeText(this, "Sorted by shape $shapeOrder", Toast.LENGTH_SHORT).show()
+
+            Toast.makeText(this, "Sorted by shape ${Sorting.shapeOrder}", Toast.LENGTH_SHORT).show()
         }
 
-/*        shapeButton.setOnClickListener {
-            listOfFigures = Sorting(listOfFigures).sortShape()
-            val adapter = Adapter(this, listOfFigures as java.util.ArrayList<Figure>)
-            listView.adapter = adapter
-
-            Toast.makeText(this, "Sorted by shape ${Sorting(listOfFigures).shapeOrder}", Toast.LENGTH_SHORT).show()
-        }*/
 
 
         areaButton.setOnClickListener {
-            listOfFigures = sortArea()
+            listOfFigures = Sorting.sortArea(listOfFigures)
             val adapter = Adapter(this, listOfFigures as ArrayList<Figure>)
             listView.adapter = adapter
-            Toast.makeText(this, "Sorted by area $areaOrder", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Sorted by area ${Sorting.areaOrder}", Toast.LENGTH_SHORT).show()
         }
 
         featureButton.setOnClickListener {
-            listOfFigures = sortFeature()
+            listOfFigures = Sorting.sortFeature(listOfFigures)
             val adapter = Adapter(this, listOfFigures as ArrayList<Figure>)
             listView.adapter = adapter
-            Toast.makeText(this, "Sorted by feature $featureOrder", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Sorted by feature ${Sorting.featureOrder}", Toast.LENGTH_SHORT)
+                .show()
         }
 
+
+        /*
+Listener dla przycisku menu dolnego
+ */
+        val deleteListButton = findViewById<TextView>(R.id.delete_list)
+        val addelementButton = findViewById<TextView>(R.id.add_element)
+
+        deleteListButton.setOnClickListener {
+
+
+            val alert = AlertDialog.Builder(this)
+            alert.setTitle("Warning!")
+            alert.setMessage("Do you really want to delete the list and create new one?")
+
+            alert.setPositiveButton("Yes") { dialog, which ->
+                listOfFigures.removeAll(listOfFigures)
+                listOfFigures =
+                    randomFigures(numberOfFigures, rangeFrom, rangeTo)
+
+                listView.invalidateViews()
+
+                Toast.makeText(this, "New list was created", Toast.LENGTH_SHORT).show()
+            }
+
+            alert.setNegativeButton("No", null)
+
+            alert.show()
+        }
+
+        addelementButton.setOnClickListener {
+
+            val newElement = randomFigures(1, rangeFrom, rangeTo)
+
+            println(newElement)
+
+            //adapter.notifyDataSetChanged()
+
+            val adapter = Adapter(this, listOfFigures as ArrayList<Figure>)
+            listView.adapter = adapter
+
+            Toast.makeText(this, "Added new element", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -138,7 +175,6 @@ class MainActivity : AppCompatActivity() {
         listOfFigures = serializablelist as MutableList<Figure>
 
         val listView: ListView = findViewById(R.id.listView)
-
         val adapter = Adapter(this, listOfFigures as ArrayList<Figure>)
         listView.adapter = adapter
 
@@ -150,7 +186,7 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         super.onCreateOptionsMenu(menu)
-        menuInflater.inflate(R.menu.main, menu)
+        menuInflater.inflate(R.menu.options_menu, menu)
         return true
     }
 
@@ -195,6 +231,49 @@ class MainActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+
+    override fun onCreateContextMenu(
+        menu: ContextMenu?,
+        v: View?,
+        menuInfo: ContextMenu.ContextMenuInfo?,
+    ) {
+        menuInflater.inflate(R.menu.floating_context_menu, menu)
+        val info = menuInfo as AdapterContextMenuInfo
+        val id = info.targetView.id
+        super.onCreateContextMenu(menu, v, menuInfo)
+
+    }
+
+
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        val info = item.menuInfo as AdapterContextMenuInfo
+        val id = info.targetView.id
+
+        when (item.itemId) {
+            R.id.floating_menu_copy -> {
+                val figure = listOfFigures.get(info.id.toInt())
+
+                listOfFigures.add(figure)
+
+                val listView: ListView = findViewById(R.id.listView)
+                val adapter = Adapter(this, listOfFigures as ArrayList<Figure>)
+                listView.adapter = adapter
+
+                Toast.makeText(applicationContext, "Element copied", Toast.LENGTH_SHORT).show()
+            }
+            R.id.floating_menu_delete -> {
+                listOfFigures.removeAt(info.id.toInt())
+
+                val listView: ListView = findViewById(R.id.listView)
+                val adapter = Adapter(this, listOfFigures as ArrayList<Figure>)
+                listView.adapter = adapter
+
+                Toast.makeText(applicationContext, "delete", Toast.LENGTH_SHORT).show()
+            }
+        }
+        return super.onContextItemSelected(item)
     }
 
 
@@ -329,57 +408,4 @@ class MainActivity : AppCompatActivity() {
         return areaList
     }
 
-
-    fun sortShape(/*shapeAscending: Boolean, shapeOrder: String,*/): MutableList<Figure> {
-
-/*        var shapeAscending = shapeAscending
-        var shapeOrder = shapeOrder*/
-
-        println(listOfFigures)
-        if (shapeAscending) {
-            listOfFigures = listOfFigures.sortedBy { it.javaClass.simpleName }.toMutableList()
-            shapeOrder = "ascending"
-        } else {
-            listOfFigures =
-                listOfFigures.sortedByDescending { it.javaClass.simpleName }.toMutableList()
-            shapeOrder = "descending"
-        }
-
-        shapeAscending = !shapeAscending
-        println(listOfFigures)
-        return listOfFigures
-    }
-
-    fun sortArea(/*areaAscending: Boolean, areaOrder: String*/): MutableList<Figure> {
-
-/*        var areaAscending = areaAscending
-        var areaOrder = areaOrder*/
-
-        if (areaAscending) {
-            listOfFigures = listOfFigures.sortedBy { it.figureArea }.toMutableList()
-            areaOrder = "ascending"
-        } else {
-            listOfFigures = listOfFigures.sortedByDescending { it.figureArea }.toMutableList()
-            areaOrder = "descending"
-        }
-        areaAscending = !areaAscending
-        return listOfFigures
-    }
-
-    fun sortFeature(/*featureAscending: Boolean, featureOrder: String*/): MutableList<Figure> {
-
-/*        var featureAscending = featureAscending
-        var featureOrder = featureOrder*/
-
-        if (featureAscending) {
-            listOfFigures = listOfFigures.sortedBy { it.calculateCharacteristic() }.toMutableList()
-            featureOrder = "ascending"
-        } else {
-            listOfFigures =
-                listOfFigures.sortedByDescending { it.calculateCharacteristic() }.toMutableList()
-            featureOrder = "descending"
-        }
-        featureAscending = !featureAscending
-        return listOfFigures
-    }
 }
