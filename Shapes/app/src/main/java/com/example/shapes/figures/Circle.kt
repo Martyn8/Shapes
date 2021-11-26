@@ -1,4 +1,4 @@
-package com.example.shapes
+package com.example.shapes.figures
 
 import kotlin.math.PI
 

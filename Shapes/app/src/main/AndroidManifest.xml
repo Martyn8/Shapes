@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Shapes" >
         <activity
-            android:name=".About"
+            android:name=".AboutActivity"
             android:exported="true"
             android:parentActivityName=".MainActivity" >
 
@@ -20,7 +20,7 @@
                 android:value=".MainActivity" />
         </activity>
         <activity
-            android:name=".Statistics"
+            android:name=".StatisticsActivity"
             android:exported="true"
             android:parentActivityName=".MainActivity" >
 
@@ -30,7 +30,7 @@
                 android:value=".MainActivity" />
         </activity>
         <activity
-            android:name=".Settings"
+            android:name=".SettingsActivity"
             android:exported="true"
             android:parentActivityName=".MainActivity" >
 

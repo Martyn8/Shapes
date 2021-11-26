@@ -12,7 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.slider.RangeSlider
 
-class Settings : AppCompatActivity() {
+class SettingsActivity : AppCompatActivity() {
 
     companion object {
         const val FIG_NUMBER = "NUMBER OF FIGURES"
@@ -23,47 +23,39 @@ class Settings : AppCompatActivity() {
     /*
     inicjalizacja zmiennych
      */
-    var beg: Float = 0.0f
-
-    var end: Float = 1.0f
+    private var sliderBegining: Float = 0.0f
+    private var sliderEnd: Float = 1.0f
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-
-        val broadcast_reciever = object : BroadcastReceiver() {
-
+        val broadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(arg0: Context, intent: Intent) {
                 val action = intent.action
                 if (action == "finish_activity") {
                     finish()
-                    // DO WHATEVER YOU WANT.
                 }
             }
         }
-        registerReceiver(broadcast_reciever, IntentFilter("finish_activity"))
-
-
+        registerReceiver(broadcastReceiver, IntentFilter("finish_activity"))
 
         val apply = findViewById<Button>(R.id.applySettings)
-
         val rangeSlider: RangeSlider = findViewById(R.id.rangeSlider)
 
         //czytanie wartości ze slidera
         rangeSlider.addOnChangeListener { slider, value, fromUser ->
             val values = slider.values //lista zawierająca wartość początkową i końcową
             rangeSlider.setMinSeparationValue(100.0f)
-            beg = values[0]
-            end = values[1]
-
+            sliderBegining = values[0]
+            sliderEnd = values[1]
         }
 
         //przycisk akceptowania zmian
         apply.setOnClickListener {
             val figNumber = findViewById<TextView>(R.id.textFigNum).text.toString().toInt()
-            val begVal = beg.toDouble()
-            val endVal = end.toDouble()
+            val begVal = sliderBegining.toDouble()
+            val endVal = sliderEnd.toDouble()
             if (begVal == endVal) {
                 Toast.makeText(
                     this,
@@ -75,7 +67,6 @@ class Settings : AppCompatActivity() {
                 intent.putExtra(FIG_NUMBER, figNumber)
                 intent.putExtra(RANGE_BEG, begVal)
                 intent.putExtra(RANGE_END, endVal)
-                //startActivity(intent)
                 setResult(Activity.RESULT_OK, intent)
 
                 finish()

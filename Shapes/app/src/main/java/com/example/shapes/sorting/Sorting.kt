@@ -1,6 +1,6 @@
-package sorting
+package com.example.shapes.sorting
 
-import com.example.shapes.Figure
+import com.example.shapes.figures.Figure
 
 object Sorting{
 
@@ -12,7 +12,6 @@ object Sorting{
      var featureOrder : String = "ascending"
 
     fun sortShape(list: MutableList<Figure>): MutableList<Figure> {
-
         var listOfFigures = list
 
         println(list)
@@ -30,11 +29,7 @@ object Sorting{
         return listOfFigures
     }
 
-
-
-
     fun sortArea(list: MutableList<Figure>): MutableList<Figure> {
-
         var listOfFigures = list
 
         if (areaAscending) {
@@ -48,10 +43,7 @@ object Sorting{
         return listOfFigures
     }
 
-
-
     fun sortFeature(list: MutableList<Figure>): MutableList<Figure> {
-
         var listOfFigures = list
 
         if (featureAscending) {
