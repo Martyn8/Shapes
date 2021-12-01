@@ -29,8 +29,8 @@
     <string name="aboutText">Title: \n Shapes \n \n This is a figure draw application \n \n Author: \n Martyna Jurusik \n Teleinformatics semester 7 \n \n 2021</string>
 
     <string-array name="Figures">
-        <item>Triangle</item>
-        <item>Circle</item>
-        <item>Square</item>
+        <item>"Triangle"</item>
+        <item>"Circle"</item>
+        <item>"Square"</item>
     </string-array>
 </resources>

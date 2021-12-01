@@ -2,9 +2,6 @@ package com.example.shapes
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.Dialog
-import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -236,18 +233,61 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.floating_menu_edit -> {
 
+                var figure = listOfFigures[info.id.toInt()]
 
                 val view = layoutInflater.inflate(R.layout.edit_dialog, null)
                 val width = LinearLayout.LayoutParams.WRAP_CONTENT
                 val height = LinearLayout.LayoutParams.WRAP_CONTENT
                 val window = PopupWindow(view, width, height, true)
-                val displayMetrics = DisplayMetrics()
 
+                val shapelistview = view.findViewById<ListView>(R.id.shapesList)
+
+                val array : Array<String> = arrayOf("Triangle", "Circle", "Square")
+
+                val arrayAdapter : ArrayAdapter<String> = ArrayAdapter(
+                    this, android.R.layout.simple_list_item_1, array
+                )
+
+                shapelistview.adapter = arrayAdapter
 
                 window.showAtLocation(listView, Gravity.CENTER, 0, 0)
 
+                var selectedItem = -1
 
-                Toast.makeText(applicationContext, "Element edited", Toast.LENGTH_SHORT).show()
+                shapelistview.setOnItemClickListener{ adapterView, view, i , l ->
+                    selectedItem = i
+                }
+
+                val editBtn = view.findViewById<Button>(R.id.editAccept)
+
+                editBtn.setOnClickListener {
+                    val newSize = view.findViewById<EditText>(R.id.newSize)
+
+                    if(newSize.text.isNotEmpty() && selectedItem!=-1){
+                        val size = newSize.text.toString().toDouble()
+
+                        when (selectedItem) {
+                            0 -> {
+                                figure = Triangle(size)
+                            }
+                            1 -> {
+                                figure = Circle(size)
+                            }
+                            2 -> {
+                                figure = Square(size)
+                            }
+                        }
+                        listOfFigures[info.id.toInt()] = figure
+
+                        window.dismiss()
+
+                        //val listView: ListView = findViewById(R.id.listView)
+                        listAdapter(listView)
+                    }
+                    else{
+                        Toast.makeText(applicationContext, "Choose figure and new area!", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
             R.id.floating_menu_delete -> {
                 listOfFigures.removeAt(info.id.toInt())
