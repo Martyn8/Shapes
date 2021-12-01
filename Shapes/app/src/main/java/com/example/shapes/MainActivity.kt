@@ -2,16 +2,15 @@ package com.example.shapes
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.Dialog
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.view.ContextMenu
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.util.DisplayMetrics
+import android.view.*
+import android.widget.*
 import android.widget.AdapterView.AdapterContextMenuInfo
-import android.widget.ListView
-import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +21,10 @@ import com.example.shapes.figures.Triangle
 import com.example.shapes.sorting.Sorting
 import java.io.Serializable
 import kotlin.random.Random
+import android.widget.LinearLayout
+
+
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -231,12 +234,27 @@ class MainActivity : AppCompatActivity() {
 
                 Toast.makeText(applicationContext, "Element copied", Toast.LENGTH_SHORT).show()
             }
+            R.id.floating_menu_edit -> {
+
+
+                val view = layoutInflater.inflate(R.layout.edit_dialog, null)
+                val width = LinearLayout.LayoutParams.WRAP_CONTENT
+                val height = LinearLayout.LayoutParams.WRAP_CONTENT
+                val window = PopupWindow(view, width, height, true)
+                val displayMetrics = DisplayMetrics()
+
+
+                window.showAtLocation(listView, Gravity.CENTER, 0, 0)
+
+
+                Toast.makeText(applicationContext, "Element edited", Toast.LENGTH_SHORT).show()
+            }
             R.id.floating_menu_delete -> {
                 listOfFigures.removeAt(info.id.toInt())
 
                 listAdapter(listView)   //wywołanie funkcji adaptera listy figur
 
-                Toast.makeText(applicationContext, "delete", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "Element deleted", Toast.LENGTH_SHORT).show()
             }
         }
         return super.onContextItemSelected(item)
@@ -296,3 +314,4 @@ class MainActivity : AppCompatActivity() {
         listView.adapter = adapter
     }
 }
+
