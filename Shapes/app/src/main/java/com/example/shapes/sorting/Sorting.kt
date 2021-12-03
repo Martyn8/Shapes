@@ -4,6 +4,7 @@ import com.example.shapes.figures.Figure
 
 object Sorting{
 
+    //zmienne okreslające sposób sortowania
      var shapeAscending : Boolean = true
      var areaAscending : Boolean = true
      var featureAscending : Boolean = true
@@ -14,7 +15,7 @@ object Sorting{
     fun sortShape(list: MutableList<Figure>): MutableList<Figure> {
         var listOfFigures = list
 
-        println(list)
+        //początkowo sortujemy rosnąco
         if (shapeAscending) {
             listOfFigures = listOfFigures.sortedBy { it.javaClass.simpleName }.toMutableList()
             shapeOrder = "ascending"
@@ -24,7 +25,7 @@ object Sorting{
             shapeOrder = "descending"
         }
 
-        shapeAscending = !shapeAscending
+        shapeAscending = !shapeAscending //zmiana kirunku sortowana na przeciwny
         println(listOfFigures)
         return listOfFigures
     }

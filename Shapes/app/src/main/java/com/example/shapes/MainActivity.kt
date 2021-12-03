@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.*
 import android.widget.*
 import android.widget.AdapterView.AdapterContextMenuInfo
@@ -19,9 +18,6 @@ import com.example.shapes.sorting.Sorting
 import java.io.Serializable
 import kotlin.random.Random
 import android.widget.LinearLayout
-
-
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -175,13 +171,10 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.about -> {
                 val intent = Intent(this, AboutActivity::class.java)
-                val int = 6
-                intent.putExtra("int", int)
                 startActivity(intent)
             }
             R.id.settings -> {
                 val intent = Intent(this, SettingsActivity::class.java)
-                //startActivity(intent)
                 resultContract.launch(intent)
 
             }
@@ -343,7 +336,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    //////      Funkcja odpowiedzialna za adapter dla listy figur
+    //////      Funkcja odpowiedzialna za wywołanie adaptera dla listy figur
     ////////////////////////////////////////////////////////////////////////////////////////////////
     private fun listAdapter(listView: ListView){
 
@@ -354,4 +347,3 @@ class MainActivity : AppCompatActivity() {
         listView.adapter = adapter
     }
 }
-

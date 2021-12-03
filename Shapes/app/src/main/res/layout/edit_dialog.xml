@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/editView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-android:background="@color/yellow"
+    android:background="@color/yellow"
     android:elevation="@dimen/cardview_compat_inset_shadow"
     android:padding="20dp">
 
@@ -13,7 +12,6 @@ android:background="@color/yellow"
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:text="Choose figure type"
         android:textAlignment="center"
         android:textColor="@color/white"
@@ -28,11 +26,11 @@ android:background="@color/yellow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:choiceMode="singleChoice"
+        android:listSelector="@color/cardview_shadow_start_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        android:choiceMode="singleChoice"
-        android:listSelector="@color/cardview_shadow_start_color">
+        app:layout_constraintTop_toBottomOf="@+id/textView">
 
     </ListView>
 
@@ -57,7 +55,9 @@ android:background="@color/yellow"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:ems="10"
+        android:hint="New size"
         android:inputType="numberDecimal"
+        android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"

@@ -16,25 +16,20 @@ class StatisticsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_statistics)
 
-        val broadcast_reciever = object : BroadcastReceiver() {
+
+        /*
+        Zakończenie aktywności w przypadku odebrania komunitatu finish_activity
+         */
+        val broadcastReciever = object : BroadcastReceiver() {
 
             override fun onReceive(arg0: Context, intent: Intent) {
                 val action = intent.action
                 if (action == "finish_activity") {
                     finish()
-                    // DO WHATEVER YOU WANT.
                 }
             }
         }
-        registerReceiver(broadcast_reciever, IntentFilter("finish_activity"))
-
-
-        /*    var args = intent.getBundleExtra("BUNDLE")
-        var list = args!!.getSerializable("LIST")*/
-
-        //var numListIntent = intent.getIntegerArrayListExtra("NUMLIST")
-        //var areaListIntent = intent.getDoubleArrayExtra("AREALIST")
-        //var charListIntent = intent.getDoubleArrayExtra("CHARLIST")
+        registerReceiver(broadcastReciever, IntentFilter("finish_activity"))
 
 
         /*
@@ -73,7 +68,7 @@ class StatisticsActivity : AppCompatActivity() {
 
         /*
         Wypełnienie pól tekstwowych wartościami
-        W zależności od tego czy ilość danej figury wynosi 0 czu nie
+        W zależności od tego czy liczba danego typu figury wynosi 0 czy nie
          */
         when (numListIntent?.get(0)) {
             0 -> {
